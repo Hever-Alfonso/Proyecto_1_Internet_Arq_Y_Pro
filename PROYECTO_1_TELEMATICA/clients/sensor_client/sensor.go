@@ -117,7 +117,7 @@ func (s *Sensor) Read() SensorReading {
 
 // FormatMetric returns the reading as a protocol-ready string:
 //
-//	SENSOR_DATA PUMP-001|pressure|48.5|bar|2025-03-30 14:30:00
+//	SENSOR_DATA PUMP-001|pressure|48.5|bar|2026-03-30 14:30:00
 func (r *SensorReading) FormatMetric() string {
 	ts := r.Timestamp.Format("2006-01-02 15:04:05")
 	return fmt.Sprintf("SENSOR_DATA %s|%s|%.1f|%s|%s",
