@@ -15,7 +15,7 @@
  *
  * File format (users.conf):
  *   username:password:role
- *   engineer:eng2025:ENGINEER
+ *   engineer:eng2026:ENGINEER
  *   operator1:op123:SUPERVISOR
  *
  * In production this would be replaced by LDAP, OAuth, or an HTTP

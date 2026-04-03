@@ -274,7 +274,7 @@ static void handle_request(int fd, const char *request) {
         if (query && get_param(query + 1, "user", user, sizeof(user))
                   && get_param(query + 1, "pass", pass, sizeof(pass))) {
 
-            if (strcmp(user, "engineer") == 0 && strcmp(pass, "eng2025") == 0) {
+            if (strcmp(user, "engineer") == 0 && strcmp(pass, "eng2026") == 0) {
                 /* Auth success → set cookie and redirect to dashboard */
                 send_html(fd, 302, "Found",
                     "Set-Cookie: iot_auth=engineer; Path=/; HttpOnly\r\n"

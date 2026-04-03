@@ -35,7 +35,7 @@ const (
 	defaultPort     = "9000"
 	clientName      = "sensor-fleet-go"
 	authUser        = "engineer"
-	authPassword    = "eng2025"
+	authPassword    = "eng2026"
 	publishInterval = 5 * time.Second
 )
 

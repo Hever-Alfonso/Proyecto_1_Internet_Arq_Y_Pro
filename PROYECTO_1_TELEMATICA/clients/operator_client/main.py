@@ -49,7 +49,7 @@ def main():
         port=port,
         name="operator-python",
         user="engineer",
-        password="eng2025",
+        password="eng2026",
     )
 
     alert_mgr = AlertManager()

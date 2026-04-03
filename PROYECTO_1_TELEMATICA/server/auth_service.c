@@ -59,8 +59,8 @@ int auth_service_init(const char *filepath) {
         fprintf(f, "# Format: username:password:role\n");
         fprintf(f, "# Roles: ENGINEER, SUPERVISOR\n");
         fprintf(f, "#\n");
-        fprintf(f, "engineer:eng2025:ENGINEER\n");
-        fprintf(f, "supervisor:sup2025:SUPERVISOR\n");
+        fprintf(f, "engineer:eng2026:ENGINEER\n");
+        fprintf(f, "supervisor:sup2026:SUPERVISOR\n");
         fprintf(f, "operator1:op123:SUPERVISOR\n");
         fclose(f);
 
