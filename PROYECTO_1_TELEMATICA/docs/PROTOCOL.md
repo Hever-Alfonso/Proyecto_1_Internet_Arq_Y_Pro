@@ -282,8 +282,8 @@ User credentials are stored in an external file (`users.conf`), not in the serve
 
 ```
 # username:password:role
-engineer:eng2025:ENGINEER
-supervisor:sup2025:SUPERVISOR
+engineer:eng2026:ENGINEER
+supervisor:sup2026:SUPERVISOR
 operator1:op123:SUPERVISOR
 ```
 
@@ -302,7 +302,7 @@ Client                              Server
 HELLO name=operator-01          →
                                 ←   OK hello operator-01
 
-AUTHENTICATE engineer eng2025   →
+AUTHENTICATE engineer eng2026   →
                                 ←   OK authenticated
 
 GET_STATUS                      →
