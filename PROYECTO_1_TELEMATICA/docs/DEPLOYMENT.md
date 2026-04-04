@@ -44,7 +44,7 @@ Open a new terminal:
 
 ```bash
 cd clients/sensor_client
-go run . 127.0.0.1 9000
+go run . localhost 9000
 ```
 
 Expected output:
@@ -53,7 +53,7 @@ Expected output:
 ═══════════════════════════════════════════
   IoT Sensor Client (Go)
 ═══════════════════════════════════════════
-  Server:   127.0.0.1:9000
+  Server:   localhost:9000
   Sensors:  6 devices
   Interval: 5s
 ═══════════════════════════════════════════
@@ -74,7 +74,7 @@ Open a new terminal:
 ```bash
 cd clients/operator_client
 pip install -r requirements.txt
-python main.py 127.0.0.1 9000
+python3 main.py localhost 9000
 ```
 
 Click **CONNECT** in the GUI to start receiving data.
@@ -133,24 +133,24 @@ docker ps
 docker logs -f iot-server
 ```
 
-### 2.3 Run with docker-compose
+### 2.3 Run with docker compose
 
 From the project root:
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 View logs:
 
 ```bash
-docker-compose logs -f
+docker compose logs -f
 ```
 
 Stop:
 
 ```bash
-docker-compose down
+docker compose down
 ```
 
 ### 2.4 Connect clients to Docker
@@ -160,11 +160,11 @@ Clients connect the same way — the server is exposed on port 9000:
 ```bash
 # Sensor client
 cd clients/sensor_client
-go run . 127.0.0.1 9000
+go run . localhost 9000
 
 # Operator client
 cd clients/operator_client
-python main.py 127.0.0.1 9000
+python3 main.py localhost 9000
 ```
 
 ---
@@ -198,7 +198,7 @@ ssh -i your-key.pem ubuntu@<PUBLIC_IP>
 
 ```bash
 sudo apt update && sudo apt upgrade -y
-sudo apt install -y docker.io docker-compose
+sudo apt install -y docker.io docker compose
 sudo usermod -aG docker ubuntu
 exit
 ```
@@ -220,7 +220,7 @@ docker --version
 ```bash
 git clone https://github.com/Hever-Alfonso/Proyecto_1_Internet_Arq_Y_Pro.git
 cd Proyecto_1_Internet_Arq_Y_Pro
-docker-compose up -d
+docker compose up -d
 ```
 
 Verify:
@@ -272,17 +272,17 @@ tail -f logs/server.log
 ### Restart the server
 
 ```bash
-docker-compose restart
+docker compose restart
 ```
 
 ### Update deployment
 
 ```bash
-cd iot-monitoring-system
+cd Proyecto_1_Internet_Arq_Y_Pro
 git pull
-docker-compose down
-docker-compose build
-docker-compose up -d
+docker compose down
+docker compose build
+docker compose up -d
 ```
 
 ### Monitor resources
@@ -305,7 +305,7 @@ lsof -i :9000
 # Kill the process using it
 kill -9 <PID>
 
-# Or change the port in docker-compose.yml
+# Or change the port in docker compose.yml
 ```
 
 ### Cannot connect from outside
@@ -368,8 +368,8 @@ nc -zv <HOST> 9000
 | Run sensor client | `cd clients/sensor_client && go run . <host> <port>` |
 | Run operator client | `cd clients/operator_client && python main.py <host> <port>` |
 | Docker build | `docker build -t iot-server:1.0 server/` |
-| Docker run | `docker-compose up -d` |
-| Docker stop | `docker-compose down` |
-| Docker logs | `docker-compose logs -f` |
+| Docker run | `docker compose up -d` |
+| Docker stop | `docker compose down` |
+| Docker logs | `docker compose logs -f` |
 | SSH to EC2 | `ssh -i key.pem ubuntu@<IP>` |
 | Test connection | `nc <host> 9000` |

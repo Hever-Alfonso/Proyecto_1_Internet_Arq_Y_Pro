@@ -81,7 +81,7 @@ The server starts two services:
 
 ```bash
 cd clients/sensor_client
-go run . 127.0.0.1 9000
+go run . localhost 9000
 ```
 
 ### 3. Run the operator client (Python)
@@ -89,7 +89,7 @@ go run . 127.0.0.1 9000
 ```bash
 cd clients/operator_client
 pip install -r requirements.txt
-python main.py 127.0.0.1 9000
+python3 main.py localhost 9000
 ```
 
 A login window will appear. Enter your credentials from `users.conf` to access the dashboard.
@@ -132,11 +132,11 @@ The file is re-read on every authentication attempt. In Docker, mount it as a vo
 ## Docker deployment
 
 ```bash
-docker-compose up -d
-docker-compose logs -f
+docker compose up -d
+docker compose logs -f
 ```
 
-Connect clients using `127.0.0.1` (local) or `<PUBLIC_IP>` (AWS).
+Connect clients using `localhost` (local) or `<PUBLIC_IP>` (AWS).
 
 ---
 
@@ -144,7 +144,7 @@ Connect clients using `127.0.0.1` (local) or `<PUBLIC_IP>` (AWS).
 
 1. Launch Ubuntu 22.04 EC2 (t2.micro)
 2. Open ports: 22 (SSH), 9000 (TCP protocol), 9080 (HTTP dashboard)
-3. Install Docker, clone repo, `docker-compose up -d`
+3. Install Docker, clone repo, `docker compose up -d`
 
 See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for step-by-step instructions.
 
@@ -209,7 +209,7 @@ PROYECTO_1_TELEMATICA/
 │   ├── logger.h/c               Centralised logging
 │   ├── Makefile                 Build system
 │   ├── Dockerfile               Multi-stage Docker build
-│   └── users.conf               External credentials (auto-created)
+│   └── users.conf               External credentials (mounted as Docker volume)
 ├── clients/
 │   ├── sensor_client/           Go — 6 IoT sensors
 │   │   ├── main.go              Entry point
