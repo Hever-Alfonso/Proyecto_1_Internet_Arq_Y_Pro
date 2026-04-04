@@ -17,6 +17,7 @@
 #define _GNU_SOURCE
 
 #include "http_handler.h"
+#include "auth_service.h"
 #include "equipment_state.h"
 #include "alert_system.h"
 #include "connection_handler.h"
@@ -274,7 +275,7 @@ static void handle_request(int fd, const char *request) {
         if (query && get_param(query + 1, "user", user, sizeof(user))
                   && get_param(query + 1, "pass", pass, sizeof(pass))) {
 
-            if (strcmp(user, "engineer") == 0 && strcmp(pass, "eng2026") == 0) {
+            if (auth_service_validate(user, pass) != AUTH_ROLE_NONE) {
                 /* Auth success → set cookie and redirect to dashboard */
                 send_html(fd, 302, "Found",
                     "Set-Cookie: iot_auth=engineer; Path=/; HttpOnly\r\n"
