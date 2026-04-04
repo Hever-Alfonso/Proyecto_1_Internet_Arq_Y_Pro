@@ -198,7 +198,7 @@ ssh -i your-key.pem ubuntu@<PUBLIC_IP>
 
 ```bash
 sudo apt update && sudo apt upgrade -y
-sudo apt install -y docker.io docker compose
+sudo apt install -y docker.io docker-compose-plugin
 sudo usermod -aG docker ubuntu
 exit
 ```
@@ -219,7 +219,7 @@ docker --version
 
 ```bash
 git clone https://github.com/Hever-Alfonso/Proyecto_1_Internet_Arq_Y_Pro.git
-cd Proyecto_1_Internet_Arq_Y_Pro
+cd Proyecto_1_Internet_Arq_Y_Pro/PROYECTO_1_TELEMATICA
 docker compose up -d
 ```
 
@@ -278,7 +278,7 @@ docker compose restart
 ### Update deployment
 
 ```bash
-cd Proyecto_1_Internet_Arq_Y_Pro
+cd Proyecto_1_Internet_Arq_Y_Pro/PROYECTO_1_TELEMATICA
 git pull
 docker compose down
 docker compose build
