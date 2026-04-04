@@ -201,7 +201,7 @@ python3 main.py localhost 9000
 
 **Name:**
 ```
-iot-monitoring-server
+proyecto-telematica
 ```
 
 **OS:** Click **"Ubuntu"** → **"Ubuntu Server 22.04 LTS"** → Architecture: **64-bit (x86)**
@@ -210,8 +210,8 @@ iot-monitoring-server
 
 **Key pair — VERY IMPORTANT:**
 - Click **"Create new key pair"**
-- Key pair name: `iot-key` — Type: **RSA** — Format: **.pem**
-- Click **"Create key pair"** — file `iot-key.pem` will download
+- Key pair name: `telematica-key` — Type: **RSA** — Format: **.pem**
+- Click **"Create key pair"** — file `telematica-key.pem` will download
 - **Save this file in a safe place. Without it you cannot connect to the server.**
 
 **Network settings → click "Edit" and add 3 rules:**
@@ -241,12 +241,12 @@ cd ~/Downloads
 
 **Step 3.3:** Give permissions to the key:
 ```bash
-chmod 400 iot-key.pem
+chmod 400 telematica-key.pem
 ```
 
 **Step 3.4:** Connect via SSH (replace `TU_IP` with your IP from step 2.7):
 ```bash
-ssh -i iot-key.pem ubuntu@TU_IP
+ssh -i telematica-key.pem ubuntu@TU_IP
 ```
 
 The first time it will ask:
@@ -292,7 +292,7 @@ sudo apt install -y git
 exit
 ```
 ```bash
-ssh -i iot-key.pem ubuntu@TU_IP
+ssh -i telematica-key.pem ubuntu@TU_IP
 ```
 
 **Step 4.6:** Verify Docker:
@@ -315,7 +315,7 @@ cd Proyecto_1_Internet_Arq_Y_Pro/PROYECTO_1_TELEMATICA
 
 From your local machine (NOT from SSH), open another terminal:
 ```bash
-scp -i ~/Downloads/iot-key.pem -r \
+scp -i ~/Downloads/telematica-key.pem -r \
   ~/Desktop/Internet_Arquitectura_Protocolos/Proyecto_1_Internet_Arq_Y_Pro/PROYECTO_1_TELEMATICA \
   ubuntu@TU_IP:~/
 ```
@@ -488,7 +488,7 @@ What you should be able to demonstrate:
 
 **1. Build the Docker image:**
 ```bash
-ssh -i iot-key.pem ubuntu@TU_IP
+ssh -i telematica-key.pem ubuntu@TU_IP
 cd Proyecto_1_Internet_Arq_Y_Pro/PROYECTO_1_TELEMATICA
 docker compose build
 ```
@@ -549,7 +549,7 @@ nc -zv <PUBLIC_IP> 9080
 ### "Permission denied" on SSH
 
 ```bash
-chmod 400 iot-key.pem
+chmod 400 telematica-key.pem
 ```
 Make sure you use `ubuntu@` before the IP (not `root@`).
 
@@ -638,7 +638,7 @@ AWS may stop inactive Free Tier instances. Just restart it from the EC2 console.
 | Docker run (compose) | `docker compose up -d` |
 | Docker stop | `docker compose down` |
 | Docker logs | `docker compose logs -f` |
-| SSH to EC2 | `ssh -i iot-key.pem ubuntu@<PUBLIC_IP>` |
+| SSH to EC2 | `ssh -i telematica-key.pem ubuntu@<PUBLIC_IP>` |
 | Test TCP connection | `nc <host> 9000` |
 | Test web interface | `curl http://<host>:9080` |
 | Clone repo on EC2 | `git clone https://github.com/Hever-Alfonso/Proyecto_1_Internet_Arq_Y_Pro.git` |
