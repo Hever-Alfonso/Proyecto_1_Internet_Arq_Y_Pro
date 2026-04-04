@@ -1,0 +1,28 @@
+# ── Server (C) ──
+server/server
+server/*.o
+server/*.log
+
+# ── Go ──
+clients/sensor_client/sensor-client
+clients/sensor_client/sensor-client.exe
+
+# ── Python ──
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+
+# ── Docker ──
+logs/
+
+# ── IDE ──
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
