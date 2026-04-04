@@ -60,7 +60,7 @@ def _ask_credentials():
     return result["user"], result["password"]
 
 
-DEFAULT_HOST = "localhost"
+DEFAULT_HOST = 3.239.101.186
 DEFAULT_PORT = 9000
 
 
