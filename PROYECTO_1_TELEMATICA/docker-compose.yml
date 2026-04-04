@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  iot-server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: iot-server
+    ports:
+      - "9000:9000"
+      - "9080:9080"
+    volumes:
+      - ./logs:/app/logs
+    environment:
+      - SERVER_PORT=9000
+      - LOG_FILE=/app/logs/server.log
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "9000"]
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3

@@ -38,6 +38,7 @@ RUN mkdir -p /app/logs && chown -R iotserver:iotserver /app
 USER iotserver
 
 EXPOSE 9000
+EXPOSE 9080
 
 VOLUME ["/app/logs"]
 
