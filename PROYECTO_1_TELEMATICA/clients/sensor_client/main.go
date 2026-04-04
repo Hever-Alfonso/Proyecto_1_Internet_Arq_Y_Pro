@@ -5,7 +5,7 @@
  *
  * Usage:
  *   go run . <host> <port>
- *   go run . 127.0.0.1 9000
+ *   go run . localhost 9000
  *
  * What it does:
  *   1. Creates 6 simulated sensors (pressure, rpm, temperature,
@@ -31,7 +31,7 @@ import (
 )
 
 const (
-	defaultHost     = "127.0.0.1"
+	defaultHost     = "localhost"
 	defaultPort     = "9000"
 	clientName      = "sensor-fleet-go"
 	authUser        = "engineer"

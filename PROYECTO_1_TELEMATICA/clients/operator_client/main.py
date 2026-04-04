@@ -5,8 +5,8 @@ Entry point for the IoT Operator Client (Python).
 
 Usage:
     python main.py <host> <port>
-    python main.py 127.0.0.1 9000
-    python main.py                   (defaults to 127.0.0.1:9000)
+    python main.py localhost 9000
+    python main.py                   (defaults to localhost:9000)
 
 Creates the NetworkManager, AlertManager, and OperatorDashboard,
 then starts the GUI event loop.
@@ -60,7 +60,7 @@ def _ask_credentials():
     return result["user"], result["password"]
 
 
-DEFAULT_HOST = "127.0.0.1"
+DEFAULT_HOST = "localhost"
 DEFAULT_PORT = 9000
 
 
