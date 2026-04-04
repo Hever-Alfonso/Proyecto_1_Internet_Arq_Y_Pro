@@ -22,7 +22,7 @@ from datetime import datetime
 class NetworkManager:
     """Handles all TCP communication with the monitoring server."""
 
-    def __init__(self, host="127.0.0.1", port=9000,
+    def __init__(self, host="localhost", port=9000,
                  name="operator-python", user="engineer",
                  password="eng2026"):
         self.host = host

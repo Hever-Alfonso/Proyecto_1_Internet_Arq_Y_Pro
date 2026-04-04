@@ -4,9 +4,9 @@ main.py
 Entry point for the IoT Operator Client (Python).
 
 Usage:
-    python main.py <host> <port>
-    python main.py localhost 9000
-    python main.py                   (defaults to localhost:9000)
+    python3 main.py <host> <port>
+    python3 main.py localhost 9000
+    python3 main.py                   (defaults to localhost:9000)
 
 Creates the NetworkManager, AlertManager, and OperatorDashboard,
 then starts the GUI event loop.
