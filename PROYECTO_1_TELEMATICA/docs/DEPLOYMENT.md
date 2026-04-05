@@ -4,7 +4,7 @@
 
 | Component | Version | Purpose |
 |-----------|---------|---------|
-| GCC | 9+ | Compile server |
+| GCC / Clang | 9+ | Compile server |
 | Make | any | Build system |
 | Go | 1.21+ | Sensor client |
 | Python | 3.10+ | Operator client |
@@ -31,11 +31,18 @@ make clean && make
 ./server 9000 server.log
 ```
 
+The server starts two services:
+- **TCP protocol** on port 9000
+- **HTTP web dashboard** on port 9080 (port + 80)
+
 Expected output:
 
 ```
-[2026-03-30 14:00:00] - Server listening on port 9000 (Ctrl+C to stop)
-[2026-03-30 14:00:00] - metrics_processor started (interval=5s)
+[...] - AUTH_SERVICE: loaded 'users.conf' (3 users)
+[...] - HTTP server listening on port 9080
+[...] - Server listening on port 9000 (Ctrl+C to stop)
+[...] - HTTP dashboard on http://localhost:9080
+[...] - metrics_processor started (interval=5s)
 ```
 
 ### 1.3 Run the sensor client (Go)
@@ -79,7 +86,28 @@ python3 main.py localhost 9000
 
 Click **CONNECT** in the GUI to start receiving data.
 
-### 1.5 Test with netcat
+### 1.5 Open the web dashboard
+
+Open a browser and go to:
+
+```
+http://localhost:9080
+```
+
+Login: `engineer` / `eng2025`
+
+After login you will see the dashboard with:
+- Equipment metrics (RPM, load, temperature, pressure, heading)
+- Sensor fleet table (6 sensors, all Active)
+- Recent alerts table
+- Auto-refresh every 5 seconds
+
+Other URLs available:
+- `http://localhost:9080/api/status` — JSON equipment status
+- `http://localhost:9080/api/sensors` — JSON sensor fleet
+- `http://localhost:9080/api/alerts` — JSON recent alerts
+
+### 1.6 Test with netcat
 
 Quick manual test without clients:
 
@@ -91,7 +119,7 @@ Then type:
 
 ```
 HELLO name=test
-AUTHENTICATE engineer eng2026
+AUTHENTICATE engineer eng2025
 GET_STATUS
 MODIFY_RPM 500
 ADJUST_HEADING RIGHT
@@ -157,7 +185,7 @@ docker compose down
 
 ### 2.4 Connect clients to Docker
 
-Clients connect the same way — the server is exposed on port 9000:
+Clients connect the same way — the server is exposed on ports 9000 and 9080:
 
 ```bash
 # Sensor client
@@ -167,6 +195,9 @@ go run . localhost 9000
 # Operator client
 cd clients/operator_client
 python3 main.py localhost 9000
+
+# Web dashboard
+# Open http://localhost:9080 in browser
 ```
 
 ---
@@ -258,7 +289,7 @@ Type **yes** and press Enter. You are now inside the Amazon server:
 ubuntu@ip-172-31-XX-XX:~$
 ```
 
-If you get **"Permission denied"**: verify you ran `chmod 400` and the filename is correct.  
+If you get **"Permission denied"**: verify you ran `chmod 400` and the filename is correct.
 If you get **"Connection timed out"**: verify the Security Group has port 22 open and the IP is correct.
 
 ---
@@ -340,13 +371,18 @@ You should see: `clients  docker-compose.yml  docs  README.md  server`
 docker compose up -d --build
 ```
 
-The first time takes 2–5 minutes. Expected output:
-
+The first time takes 2–5 minutes. You can check logs with:
+```bash
+docker logs -f iot-server
 ```
-[2026-04-01 ...] - AUTH_SERVICE: loaded 'users.conf' (3 users)
-[2026-04-01 ...] - HTTP server listening on port 9080
-[2026-04-01 ...] - Server listening on port 9000 (Ctrl+C to stop)
-[2026-04-01 ...] - metrics_processor started (interval=5s)
+
+Expected output:
+```
+[...] - AUTH_SERVICE: loaded 'users.conf' (3 users)
+[...] - HTTP server listening on port 9080
+[...] - Server listening on port 9000 (Ctrl+C to stop)
+[...] - HTTP dashboard on http://localhost:9080
+[...] - metrics_processor started (interval=5s)
 ```
 
 **Step 6.2:** Verify it is running:
@@ -354,60 +390,64 @@ The first time takes 2–5 minutes. Expected output:
 docker ps
 ```
 
-**Step 6.3:** View logs:
-```bash
-docker logs -f iot-server
-```
+You should see the `iot-server` container with status "Up" and ports `0.0.0.0:9000->9000/tcp, 0.0.0.0:9080->9080/tcp`.
+
 Press **Ctrl+C** to exit logs (server keeps running).
 
 ---
 
 ### PART 7: Test from the Internet
 
-**Step 7.1 — Test with the browser:**
+Replace `TU_IP` with your EC2 public IPv4 address in all commands below.
+
+**Step 7.1 — Web dashboard (browser):**
 
 From your computer (NOT from SSH), open the browser and go to:
 ```
 http://TU_IP:9080
 ```
-You should see the IoT Monitor login page.  
-Login: `engineer` / `eng2026`
+You should see the IoT Monitor login page.
+Login: `engineer` / `eng2025`
 
-**Step 7.2 — Test TCP protocol:**
-```bash
-nc TU_IP 9000
-```
-Type:
-```
-HELLO name=RemoteTest
-AUTHENTICATE engineer eng2026
-GET_STATUS
-QUIT
-```
+After login you will see the dashboard with real-time metrics, sensors, and alerts.
 
-**Step 7.3 — Connect Go sensors:**
-```bash
-cd clients/sensor_client
-go run . TU_IP 9000
-```
-
-**Step 7.4 — Connect Python operator:**
-```bash
-cd clients/operator_client
-python3 main.py TU_IP 9000
-```
-Click **CONNECT** in the GUI.
-
-**Step 7.5 — Verify JSON API:**
+**Step 7.2 — JSON API (browser):**
 ```
 http://TU_IP:9080/api/status
 http://TU_IP:9080/api/sensors
 http://TU_IP:9080/api/alerts
 ```
 
+**Step 7.3 — TCP protocol (netcat):**
+```bash
+nc TU_IP 9000
+```
+Type:
+```
+HELLO name=RemoteTest
+AUTHENTICATE engineer eng2025
+GET_STATUS
+QUIT
+```
+
+**Step 7.4 — Connect Go sensors from your laptop:**
+```bash
+cd clients/sensor_client
+go run . TU_IP 9000
+```
+
+**Step 7.5 — Connect Python operator from your laptop:**
+```bash
+cd clients/operator_client
+python3 main.py TU_IP 9000
+```
+Click **CONNECT** in the GUI.
+
 ---
 
 ### PART 8: Configure DNS with Route 53 (optional)
+
+The project code uses DNS resolution (`getaddrinfo` in Python, `net.Dial` in Go) — no hardcoded IPs in the logic. Clients accept hostnames as arguments.
 
 This allows access via a hostname like `iot.yourdomain.com` instead of the IP.
 
@@ -500,22 +540,54 @@ docker compose up -d
 docker ps
 docker logs iot-server
 ```
-Show it is running.
+Show it is running with all modules (AUTH_SERVICE, HTTP server, metrics_processor).
 
-**3. Access from the Internet:**
-- Open `http://TU_IP:9080` in browser → show login and dashboard
-- Connect Go sensors from your laptop → show data arriving
-- Connect Python operator from your laptop → show GUI working
-- Run netcat from your laptop → show protocol commands
+**3. Web access from Internet:**
+- Open `http://TU_IP:9080` in browser → show login page
+- Login with `engineer` / `eng2025` → show dashboard
+- Show metrics updating every 5 seconds
+- Show sensor fleet table (6 sensors Active)
+- Show alerts appearing when RPM is high
+- Show JSON API: `/api/status`, `/api/sensors`, `/api/alerts`
 
-**4. Show logs:**
+**4. Sensor client from local machine:**
+```bash
+go run . TU_IP 9000
+```
+Show 6 sensors sending data and receiving `OK sensor_received`.
+
+**5. Operator client from local machine:**
+```bash
+python3 main.py TU_IP 9000
+```
+Click CONNECT, show metrics updating, use RPM buttons, show alerts appearing.
+
+**6. Multiple simultaneous clients:**
+- Have Go sensors + Python operator + web dashboard all connected at the same time
+- Show the web dashboard displays the correct client count
+
+**7. Protocol test with netcat:**
+```bash
+nc TU_IP 9000
+AUTHENTICATE engineer eng2025
+GET_STATUS
+MODIFY_RPM 500
+GET_ALERTS
+LIST USERS
+QUIT
+```
+
+**8. Show logs:**
 ```bash
 docker logs iot-server | tail -50
 ```
+Show timestamps, client IPs, requests, responses, SENSOR_DATA entries, METRIC broadcasts, ALERT detections.
 
-**5. Show multiple simultaneous clients:**
-- Have Go sensors + Python operator + netcat connected at the same time
-- Show the web dashboard displays the correct client count
+**9. Show external authentication:**
+```bash
+docker exec iot-server cat /app/users.conf
+```
+Show that credentials are stored externally, not hardcoded in the server binary.
 
 ---
 
@@ -527,8 +599,11 @@ docker logs iot-server | tail -50
 # Check if port is in use
 lsof -i :9000
 
-# Kill the process using it
-kill -9 <PID>
+# Kill the process using it (Linux)
+kill -9 $(lsof -t -i :9000)
+
+# Kill the process using it (macOS)
+lsof -ti :9000 | xargs kill -9
 ```
 
 ### Cannot connect from outside (AWS)
@@ -606,6 +681,16 @@ nc -zv <HOST> 9000
 
 AWS may stop inactive Free Tier instances. Just restart it from the EC2 console. **The public IP may change after restarting — check the new IP.**
 
+### macOS compilation issues
+
+```bash
+# Install Xcode command line tools
+xcode-select --install
+
+# If binary is quarantined
+xattr -d com.apple.quarantine server
+```
+
 ---
 
 ## 8. Costs
@@ -634,11 +719,15 @@ AWS may stop inactive Free Tier instances. Just restart it from the EC2 console.
 | Run server locally | `./server 9000 server.log` |
 | Run sensor client | `cd clients/sensor_client && go run . <host> <port>` |
 | Run operator client | `cd clients/operator_client && python3 main.py <host> <port>` |
+| Open web dashboard | `http://<host>:9080` in browser |
 | Docker build | `docker build -t iot-server:1.0 server/` |
 | Docker run (compose) | `docker compose up -d` |
 | Docker stop | `docker compose down` |
 | Docker logs | `docker compose logs -f` |
 | SSH to EC2 | `ssh -i telematica-key.pem ubuntu@<PUBLIC_IP>` |
 | Test TCP connection | `nc <host> 9000` |
-| Test web interface | `curl http://<host>:9080` |
+| Test web interface | `http://<host>:9080` |
+| JSON API status | `http://<host>:9080/api/status` |
+| JSON API sensors | `http://<host>:9080/api/sensors` |
+| JSON API alerts | `http://<host>:9080/api/alerts` |
 | Clone repo on EC2 | `git clone https://github.com/Hever-Alfonso/Proyecto_1_Internet_Arq_Y_Pro.git` |
