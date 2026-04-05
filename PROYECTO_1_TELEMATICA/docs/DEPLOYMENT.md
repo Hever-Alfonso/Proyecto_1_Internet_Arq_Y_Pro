@@ -241,8 +241,8 @@ proyecto-telematica
 
 **Key pair — VERY IMPORTANT:**
 - Click **"Create new key pair"**
-- Key pair name: `telematica-key` — Type: **RSA** — Format: **.pem**
-- Click **"Create key pair"** — file `telematica-key.pem` will download
+- Key pair name: `iot-key` — Type: **RSA** — Format: **.pem**
+- Click **"Create key pair"** — file `iot-key.pem` will download
 - **Save this file in a safe place. Without it you cannot connect to the server.**
 
 **Network settings → click "Edit" and add 3 rules:**
@@ -272,12 +272,12 @@ cd ~/Downloads
 
 **Step 3.3:** Give permissions to the key:
 ```bash
-chmod 400 telematica-key.pem
+chmod 400 iot-key.pem
 ```
 
 **Step 3.4:** Connect via SSH (replace `TU_IP` with your IP from step 2.7):
 ```bash
-ssh -i telematica-key.pem ubuntu@TU_IP
+ssh -i iot-key.pem ubuntu@TU_IP
 ```
 
 The first time it will ask:
@@ -323,7 +323,7 @@ sudo apt install -y git
 exit
 ```
 ```bash
-ssh -i telematica-key.pem ubuntu@TU_IP
+ssh -i iot-key.pem ubuntu@TU_IP
 ```
 
 **Step 4.6:** Verify Docker:
@@ -407,7 +407,7 @@ From your computer (NOT from SSH), open the browser and go to:
 http://TU_IP:9080
 ```
 You should see the IoT Monitor login page.
-Login: `engineer` / `eng2025`
+Login: `engineer` / `eng2026`
 
 After login you will see the dashboard with real-time metrics, sensors, and alerts.
 
@@ -528,7 +528,7 @@ What you should be able to demonstrate:
 
 **1. Build the Docker image:**
 ```bash
-ssh -i telematica-key.pem ubuntu@TU_IP
+ssh -i iot-key.pem ubuntu@TU_IP
 cd Proyecto_1_Internet_Arq_Y_Pro/PROYECTO_1_TELEMATICA
 docker compose build
 ```
@@ -544,7 +544,7 @@ Show it is running with all modules (AUTH_SERVICE, HTTP server, metrics_processo
 
 **3. Web access from Internet:**
 - Open `http://TU_IP:9080` in browser → show login page
-- Login with `engineer` / `eng2025` → show dashboard
+- Login with `engineer` / `eng2026` → show dashboard
 - Show metrics updating every 5 seconds
 - Show sensor fleet table (6 sensors Active)
 - Show alerts appearing when RPM is high
@@ -569,7 +569,7 @@ Click CONNECT, show metrics updating, use RPM buttons, show alerts appearing.
 **7. Protocol test with netcat:**
 ```bash
 nc TU_IP 9000
-AUTHENTICATE engineer eng2025
+AUTHENTICATE engineer eng2026
 GET_STATUS
 MODIFY_RPM 500
 GET_ALERTS
@@ -624,7 +624,7 @@ nc -zv <PUBLIC_IP> 9080
 ### "Permission denied" on SSH
 
 ```bash
-chmod 400 telematica-key.pem
+chmod 400 iot-key.pem
 ```
 Make sure you use `ubuntu@` before the IP (not `root@`).
 
@@ -724,7 +724,7 @@ xattr -d com.apple.quarantine server
 | Docker run (compose) | `docker compose up -d` |
 | Docker stop | `docker compose down` |
 | Docker logs | `docker compose logs -f` |
-| SSH to EC2 | `ssh -i telematica-key.pem ubuntu@<PUBLIC_IP>` |
+| SSH to EC2 | `ssh -i iot-key.pem ubuntu@<PUBLIC_IP>` |
 | Test TCP connection | `nc <host> 9000` |
 | Test web interface | `http://<host>:9080` |
 | JSON API status | `http://<host>:9080/api/status` |
