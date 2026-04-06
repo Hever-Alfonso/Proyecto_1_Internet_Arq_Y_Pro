@@ -94,7 +94,7 @@ Open a browser and go to:
 http://localhost:9080
 ```
 
-Login: `engineer` / `eng2025`
+Login: `engineer` / `eng2026`
 
 After login you will see the dashboard with:
 - Equipment metrics (RPM, load, temperature, pressure, heading)
@@ -119,7 +119,7 @@ Then type:
 
 ```
 HELLO name=test
-AUTHENTICATE engineer eng2025
+AUTHENTICATE engineer eng2026
 GET_STATUS
 MODIFY_RPM 500
 ADJUST_HEADING RIGHT
@@ -425,7 +425,7 @@ nc TU_IP 9000
 Type:
 ```
 HELLO name=RemoteTest
-AUTHENTICATE engineer eng2025
+AUTHENTICATE engineer eng2026
 GET_STATUS
 QUIT
 ```
